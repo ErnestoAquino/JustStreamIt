@@ -176,7 +176,7 @@ button {
     padding: 20px;
 }
 
-.category .top_rated_films .action .family .biography {
+.category .top_rated_films .comedy .family .biography {
     display: grid;
     grid-template-columns: repeat(3, 100%);
     overflow: hidden;

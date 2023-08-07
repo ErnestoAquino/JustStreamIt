@@ -127,15 +127,20 @@ fetchFilms("http://localhost:8000/api/v1/titles/?sort_by=-imdb_score").then(film
     })
 })
 
-fetchFilms("http://localhost:8000/api/v1/titles/?sort_by=-imdb_score&genre=Action").then(films => {
+fetchFilms("http://localhost:8000/api/v1/titles/?sort_by=-imdb_score&genre=Comedy").then(films => {
     films.forEach(film => {
         console.log(film.title);
 
-        const filmsContainer = document.querySelector(".action .films")
+        const filmsContainer = document.querySelector(".comedy .films")
         const newFilm = document.createElement("div")
         newFilm.classList.add("film")
 
-        newFilm.style.backgroundImage = `url(${film.image_url})`
+        const img = new Image();
+        img.src = film.image_url;
+
+        img.onload = () => {
+            newFilm.style.backgroundImage = `url(${film.image_url})`
+        }
 
         const textElement = document.createElement('h3');
         textElement.textContent = film.title;
