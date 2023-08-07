@@ -1,15 +1,9 @@
 
-/*style,*/
-/*.resized_image {*/
-/*    max-width: 100%;*/
-/*    height: auto;*/
-/*}*/
-
 body {
     margin: 0;
     padding: 0;
     font-family: Arial, sans-serif;
-    background-color: #E50914;
+    background-color: black;
 }
 
 .navbar {
@@ -75,125 +69,6 @@ body {
     width: 32px;
 }
 
-/*.best_film {*/
-    /*background-color: #a90101;*/
-    /*height: 56.25vw;*/
-    /*position: relative;*/
-    /*width: 100%;*/
-    /*z-index: 90;*/
-    /*bottom: 0;*/
-    /*left: 0;*/
-    /*right: 0;*/
-    /*top: 0;*/
-    /*margin-top: 0;*/
-
-    /*background-image: url("images/best_film.jpg");*/
-    /*background-image: url("images/best_film.jpg");*/
-    /*background-size: cover;*/
-    /*background-position: center center;*/
-    /*background-repeat: no-repeat;*/
-    /*height: 100%;*/
-/*}*/
-
-/*.best_film > div{*/
-/*    position: absolute;*/
-/*    top: 0;*/
-/*    left: 0;*/
-/*    width: 100%;*/
-/*    height: 100%;*/
-/*    display: flex;*/
-/*    flex-direction: column;*/
-/*    align-items: center;*/
-/*    justify-content: center;*/
-/*    text-align: center;*/
-/*    color: #fff;*/
-/*}*/
-
-/*.overlay {*/
-/*    position: absolute;*/
-/*    top: 0;*/
-/*    left: 0;*/
-/*    width: 100%;*/
-/*    height: 100%;*/
-/*    background-color: rgba(0, 0, 0, 0.5); !* Color oscuro con opacidad (0.5) *!*/
-/*    display: flex;*/
-/*    flex-direction: column;*/
-/*    justify-content: flex-end;*/
-/*    align-items: flex-start;*/
-/*    color: white; !* Color del texto que estará encima del velo *!*/
-/*}*/
-
-/*.overlay h2,*/
-/*.overlay p,*/
-/*.overlay button {*/
-/*    position: relative;*/
-/*    left: 20px; !* Ajusta la posición izquierda según tus necesidades *!*/
-/*    bottom: 20px; !* Ajusta la posición inferior según tus necesidades *!*/
-/*    margin-bottom: 0;*/
-/*}*/
-/*.overlay h2 {*/
-/*    font-size: 24px;*/
-/*}*/
-
-/*.overlay p {*/
-/*    font-size: 16px;*/
-/*}*/
-
-/*.overlay button {*/
-/*    background-color: #ffffff;*/
-/*    color: #000000;*/
-/*    border: none;*/
-/*    padding: 10px 20px;*/
-/*    cursor: pointer;*/
-/*    font-size: 18px;*/
-/*}*/
-
-.best_film {
-    background-image: url("../images/best_film_test.webp");
-    width: 100%;
-    height: 100vh; /* Ajusta la altura a tu preferencia */
-    position: fixed;
-    /*background-size: auto 100%;*/
-    background-size: cover;
-    background-position: center center;
-    background-repeat: no-repeat;
-}
-
-
-.overlay {
-    background-color: rgba(0, 0, 0, 0.4); /* Color oscuro con opacidad (0.5) */
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    align-items: flex-start;
-    padding: 20px;
-    color: white; /* Color del texto y botones */
-}
-
-.content {
-    margin-bottom: 50px; /* Ajusta el espacio entre el contenido y los botones */
-}
-
-h2 {
-    font-size: 36px;
-    font-weight: bold;
-    margin-bottom: 10px;
-}
-
-p {
-    font-size: 18px;
-    margin-bottom: 20px;
-}
-
-.buttons {
-    display: flex;
-}
-
 button {
     padding: 10px 20px;
     margin-right: 10px;
@@ -204,16 +79,174 @@ button {
     cursor: pointer;
 }
 
-.play_button{
-    background-color: white;
-    border-radius: 4px
+/* Styles of the modal window */
+
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
 }
+
+.modal_content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+}
+
+.close_btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+}
+
+/* Styles for top rated films */
+
+/*.top_rated_films {*/
+/*    display: flex;*/
+/*    flex-wrap: nowrap;*/
+/*    overflow-x: auto;*/
+/*}*/
+
+/*.button-film {*/
+/*    border: none;*/
+/*    background: transparent;*/
+/*    cursor: pointer;*/
+/*    margin-right: 10px;*/
+/*    outline: none;*/
+/*}*/
+
+/*.button-film img {*/
+/*    max-width: 100px;*/
+/*    height: auto;*/
+/*}*/
+
+/*.film_thumbnail {*/
+/*    width: 150px;*/
+/*    height: 220px;*/
+/*    object-fit: cover;*/
+/*    margin: 10px;*/
+/*    cursor: pointer;*/
+/*}*/
+
+.container{
+    display: grid;
+    grid-template-rows: 600px;
+    /*grid-template-rows: 2fr 1fr;*/
+    /*height: 100vh;*/
+    height: auto;
+}
+
+.best_film {
+    background-image: url("../images/best_film_test.webp");
+    background-color: rgba(0, 0, 0, 0.9);
+    background-size: cover;
+    background-repeat: no-repeat;
+    width: 100%;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-end;
+    flex-direction: column;
+    position: relative;
+    color: white;
+}
+
+.best_film .content {
+    padding: 20px;
+    text-align: left;
+}
+
+.best_film_title {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.categories {
+    display: flex;
+    flex-direction: column;
+    overflow-x: scroll; /* Scroll horizontal para las categorías */
+    padding: 20px;
+}
+
+.category .top_rated_films .action .animation .documentary {
+    display: grid;
+    grid-template-columns: repeat(3, 100%);
+    overflow: hidden;
+    scroll-behavior: smooth;
+
+    position: relative;
+}
+
+.films {
+    /*display: grid;*/
+    /*grid-template-columns: repeat(3, 100%);*/
+    background-color: black;
+    display: flex;
+    flex-direction: row;
+    /*overflow-x: scroll; !* Scroll horizontal para las películas *!*/
+    margin-top: 10px;
+
+    /*flex-wrap: nowrap;*/
+    /*overflow: hidden;*/
+    /*margin-top: 10px;*/
+}
+
+.film {
+    background-color: #4b4b4b;
+    width: 200px; /* Ancho de cada película */
+    height: 140px; /* Alto de cada película */
+    margin-right: 10px; /* Espacio entre las películas */
+    border-radius: 5px;
+
+    /*background-color: darkcyan;*/
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end; /* Alinear el texto abajo */
+    padding: 10px; /* Espacio interno para el texto */
+    position: relative;
+}
+
+.film h3 {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    margin: 0;
+}
+
+.buttons {
+    display: flex;
+}
+
+.play_button,
+.info_button {
+    padding: 10px 20px;
+    margin-right: 10px;
+    background-color: transparent;
+    border: none;
+    color: #000000;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+.play_button {
+    background-color: white;
+    border-radius: 4px;
+}
+
 .info_button {
     color: white;
     background-color: gray;
     border-radius: 4px;
 }
 
-button:last-child {
-    margin-right: 0;
+h2 {
+    color: whitesmoke;
 }
