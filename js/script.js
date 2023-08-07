@@ -149,11 +149,11 @@ fetchFilms("http://localhost:8000/api/v1/titles/?sort_by=-imdb_score&genre=Actio
     })
 })
 
-fetchFilms("http://localhost:8000/api/v1/titles/?sort_by=-imdb_score&genre=Animation").then(films => {
+fetchFilms("http://localhost:8000/api/v1/titles/?sort_by=-imdb_score&genre=Family").then(films => {
     films.forEach(film => {
         console.log(film.title);
 
-        const filmsContainer = document.querySelector(".animation .films")
+        const filmsContainer = document.querySelector(".family .films")
         const newFilm = document.createElement("div")
         newFilm.classList.add("film")
 
