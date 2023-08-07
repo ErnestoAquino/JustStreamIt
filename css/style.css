@@ -176,7 +176,7 @@ button {
     padding: 20px;
 }
 
-.category .top_rated_films .action .animation .adventure {
+.category .top_rated_films .action .animation .biography {
     display: grid;
     grid-template-columns: repeat(3, 100%);
     overflow: hidden;
