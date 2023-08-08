@@ -251,9 +251,67 @@ h2 {
     color: whitesmoke;
 }
 
-/* Estilos para la prueba*/
+/* ----- ----- ----- Estilos para las pruebas ----- ----- -----*/
 
 .contenedor {
     width: 90%;
     margin: auto;
 }
+
+/* ----- ----- ----- Contenedor Titulo y Controles ----- ----- -----*/
+
+.contenedor_titulo_controles {
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+}
+
+.contenedor_titulo_controles h3 {
+    color: white;
+    font-size: 30px;
+}
+
+/* ----- ----- ----- Contenedor principal y flechas ----- ----- -----*/
+
+ .peliculas_recomendadas {
+     margin-bottom: 70px;
+ }
+
+ .peliculas_recomendadas .contenedor_principal {
+     display: flex;
+     align-items: center;
+     position: relative;
+ }
+
+ .peliculas_recomendadas .contenedor_principal .flecha_izquierda,
+ .peliculas_recomendadas .contenedor_principal .flecha_derecha {
+    position: absolute;
+     border: none;
+     background-color: rgba(0, 0, 0, 0.3);
+     font-size: 40px;
+     height: 50%;
+     top: calc(50% - 25%);
+     line-height: 40px;
+     width: 50px;
+     color: white;
+     cursor: pointer;
+     z-index: 500;
+     transition: .2s ease all;
+ }
+
+.peliculas_recomendadas .contenedor_principal .flecha_izquierda:hover,
+.peliculas_recomendadas .contenedor_principal .flecha_derecha:hover {
+    background-color: rgba(0, 0, 0, 0.9);
+}
+
+.peliculas_recomendadas .contenedor_principal .flecha_izquierda {
+     left: 0;
+}
+
+.peliculas_recomendadas .contenedor_principal .flecha_derecha {
+    right: 0;
+}
+
+/* ----- ----- ----- Carousel ----- ----- -----*/
+
+
