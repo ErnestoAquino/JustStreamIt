@@ -250,3 +250,10 @@ button {
 h2 {
     color: whitesmoke;
 }
+
+/* Estilos para la prueba*/
+
+.contenedor {
+    width: 90%;
+    margin: auto;
+}
