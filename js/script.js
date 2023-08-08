@@ -154,3 +154,55 @@ genres.forEach((genre) => {
         });
     });
 });
+
+/*------ ----- -----Code for carousel test ----- ----- -----*/
+
+const fila = document.querySelector(".contenedor_carousel");
+const  peliculas = document.querySelector(".pelicula")
+
+const flechaIzquierda = document.getElementById("flecha_izquierda");
+const flechaDerecha = document.getElementById("flecha_derecha");
+
+/*----- ----- ----- Event Listener for right arrow ----- ----- -----*/
+flechaDerecha.addEventListener("click", () => {
+    fila.scrollLeft += fila.offsetWidth;
+})
+
+/*----- ----- ----- Event Listener for left arrow ----- ----- -----*/
+flechaIzquierda.addEventListener("click", () => {
+    fila.scrollLeft -= fila.offsetWidth;
+})
+
+/*----- ----- ----- Create Film Test ----- ----- -----*/
+function createFilmElementTest(film, containerClass) {
+    const filmsContainer = document.querySelector(`.${containerClass}`);
+    const newFilm = document.createElement("div");
+    newFilm.classList.add("pelicula");
+
+    const img = new Image();
+    img.src = film.image_url;
+
+    img.onload = () => {
+        newFilm.style.backgroundImage = `url(${film.image_url})`;
+    };
+
+    img.onerror = () => {
+        newFilm.style.backgroundImage = `url("../images/best_film_test.webp")`;
+    };
+
+    const textElement = document.createElement("h3");
+    textElement.textContent = film.title;
+    textElement.style.color = "white";
+    textElement.style.fontSize = "15px";
+    textElement.style.textAlign = "left";
+    textElement.style.marginTop = "auto";
+
+    newFilm.appendChild(textElement);
+    filmsContainer.appendChild(newFilm);
+}
+
+fetchFilms("http://localhost:8000/api/v1/titles/?sort_by=-imdb_score").then((films) => {
+    films.forEach((film) => {
+        createFilmElementTest(film, "carousel");
+    });
+});
