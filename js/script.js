@@ -105,115 +105,52 @@ fetchBestFilm().then(data => {
     }
 })
 
-fetchFilms("http://localhost:8000/api/v1/titles/?sort_by=-imdb_score").then(films => {
-    films.forEach(film => {
-        console.log(film.title);
+/**
+ * Creates a film element with background image, title, and styling.
+ *
+ * @param {object} film - The film object containing details like image_url and title.
+ * @param {string} containerClass - The class name of the container where the film element will be added.
+ */
+function createFilmElement(film, containerClass) {
+    const filmsContainer = document.querySelector(`.${containerClass} .films`);
+    const newFilm = document.createElement("div");
+    newFilm.classList.add("film");
 
-        const filmsContainer = document.querySelector(".top_rated_films .films")
-        const newFilm = document.createElement("div")
-        newFilm.classList.add("film")
+    const img = new Image();
+    img.src = film.image_url;
 
-        newFilm.style.backgroundImage = `url(${film.image_url})`
+    img.onload = () => {
+        newFilm.style.backgroundImage = `url(${film.image_url})`;
+    };
 
-        const textElement = document.createElement('h3');
-        textElement.textContent = film.title;
-        textElement.style.color = "white";
-        textElement.style.fontSize = '14px';
-        textElement.style.textAlign = 'left';
-        textElement.style.marginTop = 'auto';
+    img.onerror = () => {
+        newFilm.style.backgroundImage = `url("../images/best_film_test.webp")`;
+    };
 
-        newFilm.appendChild(textElement);
-        filmsContainer.appendChild(newFilm);
-    })
-})
+    const textElement = document.createElement("h3");
+    textElement.textContent = film.title;
+    textElement.style.color = "white";
+    textElement.style.fontSize = "14px";
+    textElement.style.textAlign = "left";
+    textElement.style.marginTop = "auto";
 
-fetchFilms("http://localhost:8000/api/v1/titles/?sort_by=-imdb_score&genre=Comedy").then(films => {
-    films.forEach(film => {
-        console.log(film.title);
+    newFilm.appendChild(textElement);
+    filmsContainer.appendChild(newFilm);
+}
 
-        const filmsContainer = document.querySelector(".comedy .films")
-        const newFilm = document.createElement("div")
-        newFilm.classList.add("film")
+// Fetch and create film elements for the top-rated films
+fetchFilms("http://localhost:8000/api/v1/titles/?sort_by=-imdb_score").then((films) => {
+    films.forEach((film) => {
+        createFilmElement(film, "top_rated_films");
+    });
+});
 
-        const img = new Image();
-        img.src = film.image_url;
-
-        img.onload = () => {
-            newFilm.style.backgroundImage = `url(${film.image_url})`
-        }
-
-        const textElement = document.createElement('h3');
-        textElement.textContent = film.title;
-        textElement.style.color = "white";
-        textElement.style.fontSize = '14px';
-        textElement.style.textAlign = 'left';
-        textElement.style.marginTop = 'auto';
-
-        newFilm.appendChild(textElement);
-        filmsContainer.appendChild(newFilm);
-    })
-})
-
-fetchFilms("http://localhost:8000/api/v1/titles/?sort_by=-imdb_score&genre=Family").then(films => {
-    films.forEach(film => {
-        console.log(film.title);
-
-        const filmsContainer = document.querySelector(".family .films")
-        const newFilm = document.createElement("div")
-        newFilm.classList.add("film")
-
-        const img = new Image();
-        img.src = film.image_url;
-
-        img.onload = () => {
-            newFilm.style.backgroundImage = `url(${film.image_url})`
-        }
-
-        img.onerror = () => {
-            newFilm.style.backgroundImage = `url("../images/best_film_test.webp")`
-        }
-
-
-        const textElement = document.createElement('h3');
-        textElement.textContent = film.title;
-        textElement.style.color = "white";
-        textElement.style.fontSize = '14px';
-        textElement.style.textAlign = 'left';
-        textElement.style.marginTop = 'auto';
-
-        newFilm.appendChild(textElement);
-        filmsContainer.appendChild(newFilm);
-    })
-})
-
-fetchFilms("http://localhost:8000/api/v1/titles/?sort_by=-imdb_score&genre=Biography").then(films => {
-    films.forEach(film => {
-        console.log(film.title);
-
-        const filmsContainer = document.querySelector(".biography .films")
-        const newFilm = document.createElement("div")
-        newFilm.classList.add("film")
-
-        const img = new Image();
-        img.src = film.image_url;
-
-        img.onload = () => {
-            newFilm.style.backgroundImage = `url(${film.image_url})`
-        }
-
-        img.onerror = () => {
-            newFilm.style.backgroundImage = `url("../images/best_film_test.webp")`
-        }
-
-
-        const textElement = document.createElement('h3');
-        textElement.textContent = film.title;
-        textElement.style.color = "white";
-        textElement.style.fontSize = '14px';
-        textElement.style.textAlign = 'left';
-        textElement.style.marginTop = 'auto';
-
-        newFilm.appendChild(textElement);
-        filmsContainer.appendChild(newFilm);
-    })
-})
+// Define genres and create film elements for each genre
+const genres = ["Comedy", "Family", "Biography"];
+genres.forEach((genre) => {
+    fetchFilms(`http://localhost:8000/api/v1/titles/?sort_by=-imdb_score&genre=${genre}`).then((films) => {
+        films.forEach((film) => {
+            createFilmElement(film, genre.toLowerCase());
+        });
+    });
+});
