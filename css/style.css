@@ -142,7 +142,7 @@ button {
     grid-template-rows: 600px;
     /*grid-template-rows: 2fr 1fr;*/
     /*height: 100vh;*/
-    height: auto;
+    /*height: auto;*/
 }
 
 .best_film {
@@ -156,7 +156,7 @@ button {
     justify-content: flex-end;
     flex-direction: column;
     position: relative;
-    color: white;
+    color: #ffffff;
 }
 
 .best_film .content {
@@ -172,11 +172,12 @@ button {
 .categories {
     display: flex;
     flex-direction: column;
-    overflow-x: scroll; /* Scroll horizontal para las categorías */
+    /*overflow-x: scroll; !* Scroll horizontal para las categorías *!*/
+    overflow: hidden;
     padding: 20px;
 }
 
-.category .top_rated_films .comedy .family .biography {
+.top_rated_films .comedy .family .biography {
     display: grid;
     grid-template-columns: repeat(3, 100%);
     overflow: hidden;
@@ -285,9 +286,9 @@ h2 {
 
  .peliculas_recomendadas .contenedor_principal .flecha_izquierda,
  .peliculas_recomendadas .contenedor_principal .flecha_derecha {
-    position: absolute;
+     position: absolute;
      border: none;
-     background-color: rgba(0, 0, 0, 0.3);
+     background: rgba(0, 0, 0, 0.3);
      font-size: 40px;
      height: 50%;
      top: calc(50% - 25%);
@@ -305,13 +306,41 @@ h2 {
 }
 
 .peliculas_recomendadas .contenedor_principal .flecha_izquierda {
-     left: 0;
+    left: 0;
+    /*margin-left: 0;*/
 }
 
 .peliculas_recomendadas .contenedor_principal .flecha_derecha {
     right: 0;
+    margin-right: 0;
 }
 
 /* ----- ----- ----- Carousel ----- ----- -----*/
 
+ .peliculas_recomendadas .contenedor_carousel {
+     width: 100%;
+     padding: 20px 0;
+     overflow: hidden;
+     scroll-behavior: smooth;
+ }
 
+.peliculas_recomendadas .contenedor_carousel .carousel {
+    display: flex;
+    flex-wrap: nowrap;
+}
+
+.peliculas_recomendadas .contenedor_carousel .carousel .pelicula {
+    min-width: 25%;
+    transition: .3s ease all;
+    box-shadow: 5px 5px 10px rgba(0,0,0, .3 );
+}
+
+.peliculas_recomendadas .contenedor_carousel .carousel .pelicula.hover {
+    transform: scale(1.2);
+    transform-origin: center;
+}
+
+.peliculas_recomendadas .contenedor_carousel .carousel .pelicula img {
+    width: 100%;
+    vertical-align: top;
+}
