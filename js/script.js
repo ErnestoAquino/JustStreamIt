@@ -176,7 +176,53 @@ function addCarouselArrowEvents(containerClass, arrowRightId, arrowLeftId) {
         row.scrollLeft -= row.offsetWidth;
     })
 }
-/*----- ----- ----- Create Film Test ----- ----- -----*/
+/*----- ----- ----- Add carousel method by id test ----- ----- -----*/
+function  TestAddCarouselArrowEvents(containerId, arrowRightId, arrowLeftId) {
+    const row = document.getElementById(containerId)
+    const arrowRight = document.getElementById(arrowRightId)
+    const arrowLeft = document.getElementById(arrowLeftId)
+
+    arrowRight.addEventListener("click", () => {
+        row.scrollLeft += row.offsetWidth;
+    })
+
+    arrowLeft.addEventListener("click", () => {
+        row.scrollLeft -= row.offsetWidth;
+    })
+}
+
+function TestCreateFilmElement(film, containerId) {
+    // const filmsContainer = document.querySelector(`.${containerClass} .films`);
+
+    const filmsContainer = document.getElementById(containerId)
+    const newFilm = document.createElement("div");
+    newFilm.classList.add("pelicula");
+
+    const img = new Image();
+    img.src = film.image_url;
+
+    img.onload = () => {
+        newFilm.style.backgroundImage = `url(${film.image_url})`;
+    };
+
+    img.onerror = () => {
+        newFilm.style.backgroundImage = `url("../images/best_film_test.webp")`;
+    };
+
+    const textElement = document.createElement("h3");
+    textElement.textContent = film.title;
+    textElement.style.color = "white";
+    textElement.style.fontSize = "14px";
+    textElement.style.textAlign = "left";
+    textElement.style.marginTop = "auto";
+
+    newFilm.appendChild(textElement);
+    filmsContainer.appendChild(newFilm);
+}
+/*----- ----- ----- End Add carousel method by id test ----- ----- -----*/
+
+
+/*----- ----- ----- Start Create Film Test ----- ----- -----*/
 function createFilmElementTest(film, containerClass) {
     const filmsContainer = document.querySelector(`.${containerClass}`);
     const newFilm = document.createElement("div");
@@ -205,6 +251,7 @@ function createFilmElementTest(film, containerClass) {
 }
 
 
+/*----- ----- ----- Top Rated Films ----- ----- -----*/
 fetchFilms("http://localhost:8000/api/v1/titles/?sort_by=-imdb_score").then((films) => {
     films.forEach((film) => {
         createFilmElementTest(film, "carousel");
@@ -213,3 +260,38 @@ fetchFilms("http://localhost:8000/api/v1/titles/?sort_by=-imdb_score").then((fil
 
 addCarouselArrowEvents("contenedor_carousel", "flecha_derecha", "flecha_izquierda")
 
+/*----- ----- ----- Comedy ----- ----- -----*/
+fetchFilms("http://localhost:8000/api/v1/titles/?genre=Comedy&sort_by=-imdb_score").then((films) => {
+    films.forEach((film) => {
+        TestCreateFilmElement(film, "carousel_comedy");
+    });
+});
+
+// addCarouselArrowEvents("contenedor_carousel", "flecha_derecha", "flecha_izquierda")
+TestAddCarouselArrowEvents("container_carousel_comedy",
+    "arrow_right_comedy",
+    "arrow_left_comedy")
+
+/*----- ----- ----- Family ----- ----- -----*/
+
+fetchFilms("http://localhost:8000/api/v1/titles/?genre=Family&sort_by=-imdb_score").then((films) => {
+    films.forEach((film) => {
+        TestCreateFilmElement(film, "carousel_family");
+    });
+});
+
+TestAddCarouselArrowEvents("container_carousel_family",
+    "arrow_right_family",
+    "arrow_left_family")
+
+/*----- ----- ----- Biography ----- ----- -----*/
+
+fetchFilms("http://localhost:8000/api/v1/titles/?genre=Biography&sort_by=-imdb_score").then((films) => {
+    films.forEach((film) => {
+        TestCreateFilmElement(film, "carousel_biography");
+    });
+});
+
+TestAddCarouselArrowEvents("container_carousel_biography",
+    "arrow_right_biography",
+    "arrow_left_biography")
