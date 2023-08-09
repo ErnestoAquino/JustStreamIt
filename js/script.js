@@ -155,24 +155,27 @@ genres.forEach((genre) => {
     });
 });
 
-/*------ ----- -----Code for carousel test ----- ----- -----*/
+/*------ ----- ----- Code for carousel ----- ----- -----*/
 
-const fila = document.querySelector(".contenedor_carousel");
-const  peliculas = document.querySelector(".pelicula")
+/**
+ * Adds event listeners to carousel arrow buttons for scrolling left and right.
+ *
+ * @param {string} containerClass - The class of the container element for the carousel.
+ * @param {string} arrowRightId - The ID of the right arrow button element.
+ * @param {string} arrowLeftId - The ID of the left arrow button element.
+ */
+function addCarouselArrowEvents(containerClass, arrowRightId, arrowLeftId) {
+    const row = document.querySelector(`.${containerClass}`);
+    const arrowRight = document.getElementById(arrowRightId);
+    const arrowLeft = document.getElementById(arrowLeftId);
 
-const flechaIzquierda = document.getElementById("flecha_izquierda");
-const flechaDerecha = document.getElementById("flecha_derecha");
-
-/*----- ----- ----- Event Listener for right arrow ----- ----- -----*/
-flechaDerecha.addEventListener("click", () => {
-    fila.scrollLeft += fila.offsetWidth;
-})
-
-/*----- ----- ----- Event Listener for left arrow ----- ----- -----*/
-flechaIzquierda.addEventListener("click", () => {
-    fila.scrollLeft -= fila.offsetWidth;
-})
-
+    arrowRight.addEventListener("click", () => {
+        row.scrollLeft += row.offsetWidth;
+    })
+    arrowLeft.addEventListener("click", () => {
+        row.scrollLeft -= row.offsetWidth;
+    })
+}
 /*----- ----- ----- Create Film Test ----- ----- -----*/
 function createFilmElementTest(film, containerClass) {
     const filmsContainer = document.querySelector(`.${containerClass}`);
@@ -201,8 +204,12 @@ function createFilmElementTest(film, containerClass) {
     filmsContainer.appendChild(newFilm);
 }
 
+
 fetchFilms("http://localhost:8000/api/v1/titles/?sort_by=-imdb_score").then((films) => {
     films.forEach((film) => {
         createFilmElementTest(film, "carousel");
     });
 });
+
+addCarouselArrowEvents("contenedor_carousel", "flecha_derecha", "flecha_izquierda")
+
