@@ -140,9 +140,6 @@ button {
 .container{
     display: grid;
     grid-template-rows: 600px;
-    /*grid-template-rows: 2fr 1fr;*/
-    /*height: 100vh;*/
-    /*height: auto;*/
 }
 
 .best_film {
@@ -275,7 +272,7 @@ h2 {
 /* ----- ----- ----- Contenedor principal y flechas ----- ----- -----*/
 
  .peliculas_recomendadas {
-     margin-bottom: 70px;
+     /*margin-bottom: 70px;*/
  }
 
  .peliculas_recomendadas .contenedor_principal {
