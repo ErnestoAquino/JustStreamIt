@@ -105,95 +105,42 @@ fetchBestFilm().then(data => {
     }
 })
 
-/**
- * Creates a film element with background image, title, and styling.
- *
- * @param {object} film - The film object containing details like image_url and title.
- * @param {string} containerClass - The class name of the main_container where the film element will be added.
- */
-function createFilmElement(film, containerClass) {
-    const filmsContainer = document.querySelector(`.${containerClass} .films`);
-    const newFilm = document.createElement("div");
-    newFilm.classList.add("film");
-
-    const img = new Image();
-    img.src = film.image_url;
-
-    img.onload = () => {
-        newFilm.style.backgroundImage = `url(${film.image_url})`;
-    };
-
-    img.onerror = () => {
-        newFilm.style.backgroundImage = `url("../images/best_film_test.webp")`;
-    };
-
-    const textElement = document.createElement("h3");
-    textElement.textContent = film.title;
-    textElement.style.color = "white";
-    textElement.style.fontSize = "14px";
-    textElement.style.textAlign = "left";
-    textElement.style.marginTop = "auto";
-
-    newFilm.appendChild(textElement);
-    filmsContainer.appendChild(newFilm);
-}
-
-// Fetch and create film elements for the top-rated films
-fetchFilms("http://localhost:8000/api/v1/titles/?sort_by=-imdb_score").then((films) => {
-    films.forEach((film) => {
-        createFilmElement(film, "top_rated_films");
-    });
-});
-
-// Define genres and create film elements for each genre
-const genres = ["Comedy", "Family", "Biography"];
-genres.forEach((genre) => {
-    fetchFilms(`http://localhost:8000/api/v1/titles/?sort_by=-imdb_score&genre=${genre}`).then((films) => {
-        films.forEach((film) => {
-            createFilmElement(film, genre.toLowerCase());
-        });
-    });
-});
-
 /*------ ----- ----- Code for carousel ----- ----- -----*/
 
 /**
- * Adds event listeners to carousel arrow buttons for scrolling left and right.
+ * Adds click event listeners to the right and left arrow buttons for a carousel.
  *
- * @param {string} containerClass - The class of the main_container element for the carousel.
+ * @param {string} containerId - The ID of the container element that holds the carousel.
  * @param {string} arrowRightId - The ID of the right arrow button element.
  * @param {string} arrowLeftId - The ID of the left arrow button element.
  */
-function addCarouselArrowEvents(containerClass, arrowRightId, arrowLeftId) {
-    const row = document.querySelector(`.${containerClass}`);
-    const arrowRight = document.getElementById(arrowRightId);
-    const arrowLeft = document.getElementById(arrowLeftId);
-
-    arrowRight.addEventListener("click", () => {
-        row.scrollLeft += row.offsetWidth;
-    })
-    arrowLeft.addEventListener("click", () => {
-        row.scrollLeft -= row.offsetWidth;
-    })
-}
-/*----- ----- ----- Add carousel method by id test ----- ----- -----*/
-function  TestAddCarouselArrowEvents(containerId, arrowRightId, arrowLeftId) {
+function  addCarouselArrowEvents(containerId, arrowRightId, arrowLeftId) {
     const row = document.getElementById(containerId)
     const arrowRight = document.getElementById(arrowRightId)
     const arrowLeft = document.getElementById(arrowLeftId)
 
+    /**
+     * Adds a click event listener to the right arrow button that scrolls the carousel to the right.
+     */
     arrowRight.addEventListener("click", () => {
         row.scrollLeft += row.offsetWidth;
     })
 
+    /**
+     * Adds a click event listener to the left arrow button that scrolls the carousel to the left.
+     */
     arrowLeft.addEventListener("click", () => {
         row.scrollLeft -= row.offsetWidth;
     })
 }
 
-function TestCreateFilmElement(film, containerId) {
-    // const filmsContainer = document.querySelector(`.${containerClass} .films`);
-
+/**
+ * Creates and adds a film element to a specified container.
+ *
+ * @param {object} film - The film object containing details such as image URL and title.
+ * @param {string} containerId - The ID of the container element to which the film element will be added.
+ */
+function createFilmElement(film, containerId) {
     const filmsContainer = document.getElementById(containerId)
     const newFilm = document.createElement("div");
     newFilm.classList.add("pelicula");
@@ -201,10 +148,16 @@ function TestCreateFilmElement(film, containerId) {
     const img = new Image();
     img.src = film.image_url;
 
+    /**
+     * Sets the background image of the film element to the film's image URL.
+     */
     img.onload = () => {
         newFilm.style.backgroundImage = `url(${film.image_url})`;
     };
 
+    /**
+     * Sets a default background image if the film's image URL is not valid.
+     */
     img.onerror = () => {
         newFilm.style.backgroundImage = `url("../images/best_film_test.webp")`;
     };
@@ -213,36 +166,6 @@ function TestCreateFilmElement(film, containerId) {
     textElement.textContent = film.title;
     textElement.style.color = "white";
     textElement.style.fontSize = "14px";
-    textElement.style.textAlign = "left";
-    textElement.style.marginTop = "auto";
-
-    newFilm.appendChild(textElement);
-    filmsContainer.appendChild(newFilm);
-}
-/*----- ----- ----- End Add carousel method by id test ----- ----- -----*/
-
-
-/*----- ----- ----- Start Create Film Test ----- ----- -----*/
-function createFilmElementTest(film, containerClass) {
-    const filmsContainer = document.querySelector(`.${containerClass}`);
-    const newFilm = document.createElement("div");
-    newFilm.classList.add("pelicula");
-
-    const img = new Image();
-    img.src = film.image_url;
-
-    img.onload = () => {
-        newFilm.style.backgroundImage = `url(${film.image_url})`;
-    };
-
-    img.onerror = () => {
-        newFilm.style.backgroundImage = `url("../images/best_film_test.webp")`;
-    };
-
-    const textElement = document.createElement("h3");
-    textElement.textContent = film.title;
-    textElement.style.color = "white";
-    textElement.style.fontSize = "15px";
     textElement.style.textAlign = "left";
     textElement.style.marginTop = "auto";
 
@@ -253,24 +176,24 @@ function createFilmElementTest(film, containerClass) {
 /*----- ----- ----- Final Top Rated Films ----- ----- -----*/
 fetchFilms("http://localhost:8000/api/v1/titles/?sort_by=-imdb_score").then((films) => {
     films.forEach((film) => {
-        TestCreateFilmElement(film, "carousel_top_films");
+        createFilmElement(film, "carousel_top_films");
     });
 });
 
-// addCarouselArrowEvents("contenedor_carousel", "flecha_derecha", "flecha_izquierda")
-TestAddCarouselArrowEvents("container_carousel_top_films",
+//"Add events to the right and left arrows."
+addCarouselArrowEvents("container_carousel_top_films",
     "arrow_right_top_films",
     "arrow_left_top_films")
 
 /*----- ----- ----- Comedy ----- ----- -----*/
 fetchFilms("http://localhost:8000/api/v1/titles/?genre=Comedy&sort_by=-imdb_score").then((films) => {
     films.forEach((film) => {
-        TestCreateFilmElement(film, "carousel_comedy");
+        createFilmElement(film, "carousel_comedy");
     });
 });
 
-// addCarouselArrowEvents("contenedor_carousel", "flecha_derecha", "flecha_izquierda")
-TestAddCarouselArrowEvents("container_carousel_comedy",
+//"Add events to the right and left arrows."
+addCarouselArrowEvents("container_carousel_comedy",
     "arrow_right_comedy",
     "arrow_left_comedy")
 
@@ -278,11 +201,11 @@ TestAddCarouselArrowEvents("container_carousel_comedy",
 
 fetchFilms("http://localhost:8000/api/v1/titles/?genre=Family&sort_by=-imdb_score").then((films) => {
     films.forEach((film) => {
-        TestCreateFilmElement(film, "carousel_family");
+        createFilmElement(film, "carousel_family");
     });
 });
-
-TestAddCarouselArrowEvents("container_carousel_family",
+//"Add events to the right and left arrows."
+addCarouselArrowEvents("container_carousel_family",
     "arrow_right_family",
     "arrow_left_family")
 
@@ -290,10 +213,11 @@ TestAddCarouselArrowEvents("container_carousel_family",
 
 fetchFilms("http://localhost:8000/api/v1/titles/?genre=Biography&sort_by=-imdb_score").then((films) => {
     films.forEach((film) => {
-        TestCreateFilmElement(film, "carousel_biography");
+        createFilmElement(film, "carousel_biography");
     });
 });
 
-TestAddCarouselArrowEvents("container_carousel_biography",
+//"Add events to the right and left arrows."
+addCarouselArrowEvents("container_carousel_biography",
     "arrow_right_biography",
     "arrow_left_biography")
