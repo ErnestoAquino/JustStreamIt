@@ -173,51 +173,37 @@ function createFilmElement(film, containerId) {
     filmsContainer.appendChild(newFilm);
 }
 
-/*----- ----- ----- Final Top Rated Films ----- ----- -----*/
+/*----- ----- ----- Get Top Rated Films ----- ----- -----*/
 fetchFilms("http://localhost:8000/api/v1/titles/?sort_by=-imdb_score").then((films) => {
     films.forEach((film) => {
         createFilmElement(film, "carousel_top_films");
     });
 });
-
-//"Add events to the right and left arrows."
 addCarouselArrowEvents("container_carousel_top_films",
     "arrow_right_top_films",
     "arrow_left_top_films")
 
-/*----- ----- ----- Comedy ----- ----- -----*/
-fetchFilms("http://localhost:8000/api/v1/titles/?genre=Comedy&sort_by=-imdb_score").then((films) => {
-    films.forEach((film) => {
-        createFilmElement(film, "carousel_comedy");
-    });
+/*----- ----- ----- Get other genres ----- ----- -----*/
+
+const genres = [
+    { genre: "Comedy", container: "carousel_comedy" },
+    { genre: "Family", container: "carousel_family" },
+    { genre: "Biography", container: "carousel_biography" },
+]
+
+function fetchAndCreateFilms(genre) {
+    fetchFilms(`http://localhost:8000/api/v1/titles/?genre=${genre}&sort_by=-imdb_score`)
+        .then((films) => {
+            films.forEach((film) => {
+                createFilmElement(film, `carousel_${genre.toLowerCase()}`);
+            });
+        });
+
+    addCarouselArrowEvents(`container_carousel_${genre.toLowerCase()}`,
+        `arrow_right_${genre.toLowerCase()}`,
+        `arrow_left_${genre.toLowerCase()}`);
+}
+
+genres.forEach((genreData) => {
+    fetchAndCreateFilms(genreData.genre);
 });
-
-//"Add events to the right and left arrows."
-addCarouselArrowEvents("container_carousel_comedy",
-    "arrow_right_comedy",
-    "arrow_left_comedy")
-
-/*----- ----- ----- Family ----- ----- -----*/
-
-fetchFilms("http://localhost:8000/api/v1/titles/?genre=Family&sort_by=-imdb_score").then((films) => {
-    films.forEach((film) => {
-        createFilmElement(film, "carousel_family");
-    });
-});
-//"Add events to the right and left arrows."
-addCarouselArrowEvents("container_carousel_family",
-    "arrow_right_family",
-    "arrow_left_family")
-
-/*----- ----- ----- Biography ----- ----- -----*/
-
-fetchFilms("http://localhost:8000/api/v1/titles/?genre=Biography&sort_by=-imdb_score").then((films) => {
-    films.forEach((film) => {
-        createFilmElement(film, "carousel_biography");
-    });
-});
-
-//"Add events to the right and left arrows."
-addCarouselArrowEvents("container_carousel_biography",
-    "arrow_right_biography",
-    "arrow_left_biography")
