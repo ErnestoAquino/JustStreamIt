@@ -109,7 +109,7 @@ fetchBestFilm().then(data => {
  * Creates a film element with background image, title, and styling.
  *
  * @param {object} film - The film object containing details like image_url and title.
- * @param {string} containerClass - The class name of the container where the film element will be added.
+ * @param {string} containerClass - The class name of the main_container where the film element will be added.
  */
 function createFilmElement(film, containerClass) {
     const filmsContainer = document.querySelector(`.${containerClass} .films`);
@@ -160,7 +160,7 @@ genres.forEach((genre) => {
 /**
  * Adds event listeners to carousel arrow buttons for scrolling left and right.
  *
- * @param {string} containerClass - The class of the container element for the carousel.
+ * @param {string} containerClass - The class of the main_container element for the carousel.
  * @param {string} arrowRightId - The ID of the right arrow button element.
  * @param {string} arrowLeftId - The ID of the left arrow button element.
  */
@@ -250,15 +250,17 @@ function createFilmElementTest(film, containerClass) {
     filmsContainer.appendChild(newFilm);
 }
 
-
-/*----- ----- ----- Top Rated Films ----- ----- -----*/
+/*----- ----- ----- Final Top Rated Films ----- ----- -----*/
 fetchFilms("http://localhost:8000/api/v1/titles/?sort_by=-imdb_score").then((films) => {
     films.forEach((film) => {
-        createFilmElementTest(film, "carousel");
+        TestCreateFilmElement(film, "carousel_top_films");
     });
 });
 
-addCarouselArrowEvents("contenedor_carousel", "flecha_derecha", "flecha_izquierda")
+// addCarouselArrowEvents("contenedor_carousel", "flecha_derecha", "flecha_izquierda")
+TestAddCarouselArrowEvents("container_carousel_top_films",
+    "arrow_right_top_films",
+    "arrow_left_top_films")
 
 /*----- ----- ----- Comedy ----- ----- -----*/
 fetchFilms("http://localhost:8000/api/v1/titles/?genre=Comedy&sort_by=-imdb_score").then((films) => {

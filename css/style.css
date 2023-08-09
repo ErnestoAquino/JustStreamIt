@@ -79,65 +79,7 @@ button {
     cursor: pointer;
 }
 
-/* Styles of the modal window */
-
-.modal {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.8);
-}
-
-.modal_content {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 5px;
-}
-
-.close_btn {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    cursor: pointer;
-}
-
-/* Styles for top rated films */
-
-/*.top_rated_films {*/
-/*    display: flex;*/
-/*    flex-wrap: nowrap;*/
-/*    overflow-x: auto;*/
-/*}*/
-
-/*.button-film {*/
-/*    border: none;*/
-/*    background: transparent;*/
-/*    cursor: pointer;*/
-/*    margin-right: 10px;*/
-/*    outline: none;*/
-/*}*/
-
-/*.button-film img {*/
-/*    max-width: 100px;*/
-/*    height: auto;*/
-/*}*/
-
-/*.film_thumbnail {*/
-/*    width: 150px;*/
-/*    height: 220px;*/
-/*    object-fit: cover;*/
-/*    margin: 10px;*/
-/*    cursor: pointer;*/
-/*}*/
-
-.container{
+.main_wrapper{
     display: grid;
     grid-template-rows: 600px;
 }
@@ -164,59 +106,6 @@ button {
 .best_film_title {
     font-size: 24px;
     margin-bottom: 10px;
-}
-
-.categories {
-    display: flex;
-    flex-direction: column;
-    /*overflow-x: scroll; !* Scroll horizontal para las categorías *!*/
-    overflow: hidden;
-    padding: 20px;
-}
-
-.top_rated_films .comedy .family .biography {
-    display: grid;
-    grid-template-columns: repeat(3, 100%);
-    overflow: hidden;
-    scroll-behavior: smooth;
-
-    position: relative;
-}
-
-.films {
-    /*display: grid;*/
-    /*grid-template-columns: repeat(3, 100%);*/
-    background-color: black;
-    display: flex;
-    flex-direction: row;
-    /*overflow-x: scroll; !* Scroll horizontal para las películas *!*/
-    margin-top: 10px;
-
-    /*flex-wrap: nowrap;*/
-    /*overflow: hidden;*/
-    /*margin-top: 10px;*/
-}
-
-.film {
-    background-color: #4b4b4b;
-    width: 200px; /* Ancho de cada película */
-    height: 140px; /* Alto de cada película */
-    margin-right: 10px; /* Espacio entre las películas */
-    border-radius: 5px;
-
-    /*background-color: darkcyan;*/
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end; /* Alinear el texto abajo */
-    padding: 10px; /* Espacio interno para el texto */
-    position: relative;
-}
-
-.film h3 {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    margin: 0;
 }
 
 .buttons {
@@ -251,38 +140,38 @@ h2 {
 
 /* ----- ----- ----- Estilos para las pruebas ----- ----- -----*/
 
-.contenedor {
+.container {
     width: 90%;
     margin: auto;
 }
 
 /* ----- ----- ----- Contenedor Titulo y Controles ----- ----- -----*/
 
-.contenedor_titulo_controles {
+.title_controls_container {
     display: flex;
     justify-content: space-between;
     align-items: end;
 }
 
-.contenedor_titulo_controles h3 {
+.title_controls_container h3 {
     color: white;
     font-size: 30px;
 }
 
 /* ----- ----- ----- Contenedor principal y flechas ----- ----- -----*/
 
- .peliculas_recomendadas {
+ .top_films {
      /*margin-bottom: 70px;*/
  }
 
- .peliculas_recomendadas .contenedor_principal {
+ .top_films .main_container {
      display: flex;
      align-items: center;
      position: relative;
  }
 
- .peliculas_recomendadas .contenedor_principal .flecha_izquierda,
- .peliculas_recomendadas .contenedor_principal .flecha_derecha {
+ .top_films .main_container .left_arrow,
+ .top_films .main_container .right_arrow {
      position: absolute;
      border: none;
      background: rgba(0, 0, 0, 0.3);
@@ -297,24 +186,24 @@ h2 {
      transition: .2s ease all;
  }
 
-.peliculas_recomendadas .contenedor_principal .flecha_izquierda:hover,
-.peliculas_recomendadas .contenedor_principal .flecha_derecha:hover {
+.top_films .main_container .left_arrow:hover,
+.top_films .main_container .right_arrow:hover {
     background-color: rgba(0, 0, 0, 0.9);
 }
 
-.peliculas_recomendadas .contenedor_principal .flecha_izquierda {
+.top_films .main_container .left_arrow {
     left: 0;
     margin-left: 0;
 }
 
-.peliculas_recomendadas .contenedor_principal .flecha_derecha {
+.top_films .main_container .right_arrow {
     right: 0;
     margin-right: 0;
 }
 
 /* ----- ----- ----- Carousel ----- ----- -----*/
 
- .peliculas_recomendadas .contenedor_carousel {
+ .top_films .carousel_container {
      width: 100%;
      padding: 20px 0;
      overflow: hidden;
@@ -322,14 +211,14 @@ h2 {
      scroll-behavior: smooth;
  }
 
-.peliculas_recomendadas .contenedor_carousel .carousel {
+.top_films .carousel_container .carousel {
     display: flex;
     flex-wrap: nowrap;
 
     height: 200px;
 }
 
-.peliculas_recomendadas .contenedor_carousel .carousel .pelicula {
+.top_films .carousel_container .carousel .pelicula {
     min-width: 25%;
     transition: .3s ease all;
     box-shadow: 5px 5px 10px rgba(0,0,0, .3);
@@ -339,19 +228,19 @@ h2 {
     position: relative;
 }
 
-.peliculas_recomendadas .contenedor_carousel .carousel .pelicula h3 {
+.top_films .carousel_container .carousel .pelicula h3 {
     position: absolute;
     bottom: 0;
     left: 0;
     margin: 0;
 }
 
-.peliculas_recomendadas .contenedor_carousel .carousel .pelicula.hover {
+.top_films .carousel_container .carousel .pelicula.hover {
     transform: scale(1.2);
     transform-origin: center;
 }
 
-.peliculas_recomendadas .contenedor_carousel .carousel .pelicula img {
+.top_films .carousel_container .carousel .pelicula img {
     width: 100%;
     vertical-align: top;
 }
