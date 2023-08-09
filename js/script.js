@@ -179,6 +179,7 @@ fetchFilms("http://localhost:8000/api/v1/titles/?sort_by=-imdb_score").then((fil
         createFilmElement(film, "carousel_top_films");
     });
 });
+
 addCarouselArrowEvents("container_carousel_top_films",
     "arrow_right_top_films",
     "arrow_left_top_films")

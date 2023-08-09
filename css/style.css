@@ -109,10 +109,6 @@ body {
     margin-bottom: 10px;
 }
 
-/*.buttons {*/
-/*    display: flex;*/
-/*}*/
-
 .play_button,
 .info_button {
     padding: 10px 20px;
@@ -157,15 +153,6 @@ h2 {
 .title_controls_container h3 {
     color: white;
     font-size: 25px;
-}
-
-.title_controls_container .carousel_dots button {
-    background: #ffffff;
-    height: 3px;
-    width: 10px;
-    cursor: pointer;
-    border: none;
-    margin-right: 2px;
 }
 
 /* ----- ----- ----- Contenedor principal y flechas ----- ----- -----*/
