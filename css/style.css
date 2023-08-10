@@ -70,9 +70,8 @@ body {
 #profile_icon,
 #button_search,
 #button_notification {
-    height: 24px;
-    width: 24px;
-    padding: 10px 15px;
+    height: 44px;
+    width: 44px;
     margin-right: 10px;
     background-color: transparent;
     border: none;
