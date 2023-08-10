@@ -208,3 +208,21 @@ function fetchAndCreateFilms(genre) {
 genres.forEach((genreData) => {
     fetchAndCreateFilms(genreData.genre);
 });
+
+
+/*----- ----- ----- Modal Test ----- ----- -----*/
+
+const openModal = document.querySelector('.modal_info_button');
+const closeModal = document.querySelector('.modal_close')
+const modal = document.querySelector('.modal');
+
+
+openModal.addEventListener('click', (e) => {
+    e.preventDefault()
+    modal.classList.add('modal--show');
+}) 
+
+closeModal.addEventListener('click', (e) => {
+    e.preventDefault();
+    modal.classList.remove('modal--show');
+})
