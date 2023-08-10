@@ -341,3 +341,28 @@ function updateModalContent(movie) {
         </ul>
     `;
 }
+
+
+
+// ----- ----- ----- Navbar scroll ----- ----- -----//
+
+const navbar = document.querySelector('.navbar');
+const navbarHeight = navbar.offsetHeight;
+const scrollThreshold = 100; // Cambia esto según la cantidad de desplazamiento que desees antes de cambiar el fondo
+
+window.addEventListener('scroll', () => {
+    if (window.scrollY > scrollThreshold) {
+        navbar.style.backgroundColor = 'black';
+    } else {
+        navbar.style.backgroundColor = 'transparent';
+    }
+});
+
+// Establecer el color de fondo inicial al cargar la página
+window.addEventListener('load', () => {
+    if (window.scrollY > scrollThreshold) {
+        navbar.style.backgroundColor = 'black';
+    } else {
+        navbar.style.backgroundColor = 'transparent';
+    }
+});
