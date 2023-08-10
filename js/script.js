@@ -56,7 +56,6 @@ function updateBestFilm(movie){
     const titleElement = document.querySelector(".best_film_title")
     const summaryElement = document.querySelector(".best_film_summary")
 
-    // storeMovieDetails(movie.id)
     // Update the elements with the movie information
     titleElement.textContent = movie.title;
     summaryElement.textContent = `Year: ${movie.year}, IMDb Score: ${movie.imdb_score}, Votes: ${movie.votes}`
