@@ -6,6 +6,7 @@ body {
     background-color: black;
 }
 
+/* ----- ----- ----- Navigation Bar. ----- ----- -----*/
 .navbar {
     align-items: center;
     display: flex;
@@ -80,10 +81,14 @@ body {
     cursor: pointer;
 }
 
+/*---- ---- ---- Main ----- ----- -----*/
+
 .main_wrapper{
     display: grid;
     grid-template-rows: 600px;
 }
+
+/* ----- ----- ----- Styles for the Best Film. ----- ----- -----*/
 
 .best_film {
     background-image: url("../images/best_film_test.webp");
@@ -135,14 +140,14 @@ h2 {
     color: whitesmoke;
 }
 
-/* ----- ----- ----- Estilos para las pruebas ----- ----- -----*/
+/* ----- ----- ----- Carousel Styles. ----- ----- -----*/
 
 .container {
     width: 90%;
     margin: auto;
 }
 
-/* ----- ----- ----- Contenedor Titulo y Controles ----- ----- -----*/
+/* -----   Title Container and Controls.   -----*/
 
 .title_controls_container {
     display: flex;
@@ -155,7 +160,7 @@ h2 {
     font-size: 25px;
 }
 
-/* ----- ----- ----- Contenedor principal y flechas ----- ----- -----*/
+/* -----   Main container and arrows.   -----*/
 
  .top_films {
      /*margin-bottom: 70px;*/
@@ -244,13 +249,14 @@ h2 {
 
 /* ----- ----- ----- Modal style ----- ----- -----*/
 .modal {
+    display: none;
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0 ;
     background: #111111bd;
-    display: flex;
+    /*display: flex;*/
     opacity: 0;
     pointer-events: none;
     transition: opacity 1s;
@@ -262,6 +268,8 @@ h2 {
     opacity: 1;
     pointer-events: unset;
     transition: opacity 1s;
+
+    display: flex;
 }
 
 .modal_container {
