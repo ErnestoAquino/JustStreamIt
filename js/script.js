@@ -196,7 +196,7 @@ function updateBestFilm(movie){
 async function fetchFilms(url) {
     let films = []; // Array to store fetched film data.
     try {
-        while (films.length < 8) {
+        while (films.length < 7) {
             const response = await fetch(url);
             if (response.ok) {
                 const data = await response.json();// Add fetched movie data to the films array.
