@@ -166,6 +166,7 @@ function updateBestFilm(movie){
 
     // Set the "id" attribute of the "best_film" div to the movie's ID
     bestFilmDiv.setAttribute("id", `${movie.id}`);
+    storeMovieDetails(movie.id)
 
     // Get the elements inside the "best_film" div
     const titleElement = document.querySelector(".best_film_title")
@@ -193,14 +194,18 @@ function updateBestFilm(movie){
  * @throws {Error} - If there is an error during the fetch operation or processing.
  *
  */
-async function fetchFilms(url) {
+async function fetchFilms(url, skipFirstFilm = false) {
     let films = []; // Array to store fetched film data.
     try {
-        while (films.length < 7) {
+        while (films.length < 8) {
             const response = await fetch(url);
             if (response.ok) {
                 const data = await response.json();// Add fetched movie data to the films array.
-                films.push(...data.results);// Update the URL for the next call to fetch more data.
+                if (skipFirstFilm){
+                    films.push(...data.results.slice(1));
+                } else {
+                    films.push(...data.results);
+                }
                 url = data.next; // Update the URL for the next call
             } else {
                 // If the response is not successful, exit the loop
@@ -213,7 +218,7 @@ async function fetchFilms(url) {
             await storeMovieDetails(film.id);
         }
 
-        return films.slice(0, 7); // Return only the first 8 elements
+        return films.slice(0, 7); // Return only the first 7 elements
     } catch (error) {
         console.error('Error fetching films data:', error);
         return films.slice(0, 7); // Return the elements obtained so far
@@ -235,6 +240,7 @@ async function getBestFilm(){
         // If there are results and at least one film is available, process and update the display.
         if (results && results.length > 0){
             const bestFilm = parseMovie(results[0]);
+
             updateBestFilm(bestFilm)
         }
     } catch (error) {
@@ -397,7 +403,7 @@ initializeModalListeners();
 getBestFilm();
 
 //Get Top Rated Films
-fetchFilms("http://localhost:8000/api/v1/titles/?sort_by=-imdb_score").then((films) => {
+fetchFilms("http://localhost:8000/api/v1/titles/?sort_by=-imdb_score", true).then((films) => {
     films.forEach((film) => {
         createFilmElement(film, "carousel_top_films");
     });
