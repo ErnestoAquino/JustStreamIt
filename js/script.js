@@ -160,13 +160,13 @@ function parseMovie(movieData){
  * @function updateBestFilm
  * @param {object} movie - The movie object containing the information to be displayed.
  */
-function updateBestFilm(movie){
+async function updateBestFilm(movie) {
 
     const bestFilmDiv = document.querySelector(".best_film")
 
     // Set the "id" attribute of the "best_film" div to the movie's ID
     bestFilmDiv.setAttribute("id", `${movie.id}`);
-    storeMovieDetails(movie.id)
+    await storeMovieDetails(movie.id)
 
     // Get the elements inside the "best_film" div
     const titleElement = document.querySelector(".best_film_title")
@@ -240,8 +240,7 @@ async function getBestFilm(){
         // If there are results and at least one film is available, process and update the display.
         if (results && results.length > 0){
             const bestFilm = parseMovie(results[0]);
-
-            updateBestFilm(bestFilm)
+            await updateBestFilm(bestFilm)
         }
     } catch (error) {
         console.error("Error fetching best film:", error)
@@ -369,18 +368,18 @@ async function storeMovieDetails(movieId) {
 
         // Create a movie object with extracted details
         const movie = {
-            image: movieData.image_url,
-            title: movieData.title,
-            genre: movieData.genres.join(', '),
-            releaseDate: movieData.date_published,
-            rated: movieData.rated,
-            imdbScore: movieData.imdb_score,
-            director: movieData.directors.join(', '),
-            actors: movieData.actors.join(', '),
-            duration: movieData.duration,
-            country: movieData.countries.join(', '),
-            boxOffice: movieData.worldwide_gross_income,
-            summary: movieData.description
+            image: movieData.image_url || "Unknown",
+            title: movieData.title|| "Unknown",
+            genre: movieData.genres && movieData.genres.length > 0 ? movieData.genres.join(', ') : "Unknown",
+            releaseDate: movieData.date_published || "Unknown",
+            rated: movieData.rated || "Unknown",
+            imdbScore: movieData.imdb_score || "Unknown",
+            director: movieData.directors && movieData.directors.length > 0 ? movieData.directors.join(', ') : "Unknown",
+            actors: movieData.actors && movieData.actors.length > 0 ? movieData.actors.join(', ') : "Unknown",
+            duration: movieData.duration || "Unknown",
+            country: movieData.countries && movieData.countries.length > 0 ? movieData.countries.join(', ') : "Unknown",
+            boxOffice: movieData.worldwide_gross_income  || "Unknown",
+            summary: movieData.description || "Unknown"
         };
 
         // Store the movie object using its ID as the key
@@ -399,8 +398,11 @@ initNavbarScrollBehavior()
 // Call the method to initialize modal event listeners
 initializeModalListeners();
 
+
 //Call the method for get the best film
-getBestFilm();
+getBestFilm().catch(error => {
+    console.error("Error when calling getBestFilm:", error);
+})
 
 //Get Top Rated Films
 fetchFilms("http://localhost:8000/api/v1/titles/?sort_by=-imdb_score", true).then((films) => {
