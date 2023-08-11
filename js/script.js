@@ -1,3 +1,110 @@
+/* ----- ----- ----- ----- VARIABLES ----- ----- ----- -----*/
+const moviesById = {};
+
+const genres = [
+    { genre: "Comedy", container: "carousel_comedy" },
+    { genre: "Family", container: "carousel_family" },
+    { genre: "Biography", container: "carousel_biography" },
+]
+
+/* ----- ----- ----- ----- NAVBAR SCROLL ----- ----- ----- ----- */
+
+// Select the Navbar (element with the class 'navbar').
+const navbar = document.querySelector('.navbar');
+const scrollThreshold = 100; // Define a scroll threshold.
+
+// Add a scroll event listener to the global 'window' object to detect when scrolling occurs on the page.
+window.addEventListener('scroll', () => {
+    if (window.scrollY > scrollThreshold) {
+        navbar.style.backgroundColor = 'black';
+    } else {
+        navbar.style.backgroundColor = 'transparent';
+    }
+});
+
+// Add a load event listener to the global 'window' object that triggers when the page is fully loaded.
+window.addEventListener('load', () => {
+    if (window.scrollY > scrollThreshold) {
+        navbar.style.backgroundColor = 'black';
+    } else {
+        navbar.style.backgroundColor = 'transparent';
+    }
+});
+
+/* ----- ----- ----- ----- MODAL ----- ----- ----- ------*/
+
+/**
+ * Initialize modal event listeners.
+ * @function initializeModalListeners
+ * @description Sets up event listeners for opening and closing the modal.
+ */
+function initializeModalListeners() {
+    // Get references to the relevant DOM elements
+    const openModal = document.querySelector('.modal_info_button');
+    const closeModal = document.querySelector('.modal_close');
+    const modal = document.querySelector('.modal');
+
+    // Add a click event listener to the "Open Modal" button
+    openModal.addEventListener('click', (e) => {
+        e.preventDefault();
+
+        // Get the element with class "best_film"
+        const elementWithClass = document.querySelector(".best_film");
+
+        // Get the movie details using the ID of the element
+        const movieId = elementWithClass.id;
+        const movieDetails = moviesById[movieId];
+
+        // Update the modal content and show it
+        updateModalContent(movieDetails);
+        modal.classList.add('modal--show');
+    });
+
+    // Add a click event listener to the "Close Modal" button
+    closeModal.addEventListener('click', (e) => {
+        e.preventDefault();
+
+        // Hide the modal
+        modal.classList.remove('modal--show');
+    });
+}
+
+/**
+ * Updates the content of a modal with movie information.
+ *
+ * @param {Object} movie - An object containing details about the movie.
+ */
+function updateModalContent(movie) {
+
+    // Get the modal element and its child elements
+    const modal = document.getElementById('modal');
+    const modalImage = modal.querySelector('.modal_image');
+    const modalTitle = modal.querySelector('.modal_title');
+    const modalParagraph = modal.querySelector('.modal_paragraph');
+
+    // Update the modal's child elements with the movie information
+    modalImage.src = movie.image;
+    modalTitle.textContent = movie.title;
+    modalParagraph.innerHTML = `
+        <ul>
+            <li>Title: ${movie.title}</li>
+            <li>Genres: ${movie.genre}</li>
+            <li>Date published: ${movie.releaseDate}</li>
+            <li>Rated: ${movie.rated}</li>
+            <li>Score IMBd: ${movie.imdbScore}</li>
+            <li>Directors: ${movie.director}</li>
+            <li>Actors: ${movie.actors}</li>
+            <li>Duration: ${movie.duration}</li>
+            <li>Countries: ${movie.country}</li>
+            <li>Box Office: ${movie.boxOffice}</li>
+            <li>Description: ${movie.summary}</li>
+        </ul>
+    `;
+}
+
+
+/* ----- ----- ----- -----  MOVIES RETRIEVALS  ----- ----- ----- ----- */
+
 /**
  * Fetches the best film data from the API based on the IMDb score.
  * @async
@@ -50,6 +157,8 @@ function parseMovie(movieData){
 function updateBestFilm(movie){
 
     const bestFilmDiv = document.querySelector(".best_film")
+
+    // Set the "id" attribute of the "best_film" div to the movie's ID
     bestFilmDiv.setAttribute("id", `${movie.id}`);
 
     // Get the elements inside the "best_film" div
@@ -59,10 +168,13 @@ function updateBestFilm(movie){
     // Update the elements with the movie information
     titleElement.textContent = movie.title;
     summaryElement.textContent = `Year: ${movie.year}, IMDb Score: ${movie.imdb_score}, Votes: ${movie.votes}`
-    // Update the background image property using the URL of the image in image_url.
+
+    // Update the background image property using the URL of the image in image_url
     bestFilmDiv.style.backgroundImage = `url(${movie.image_url})`
-    fetchMovieDetails(movie.id).then(r => {
-        console.log("Ya esta almacenado!")
+
+    // Fetch additional movie details using the movie's ID and log a message when the details are stored
+    fetchMovieDetails(movie.id).then(() => {
+        console.log("The information of the best movie has been stored successfully.")
     })
 }
 
@@ -72,15 +184,17 @@ function updateBestFilm(movie){
  *
  * @param {string} url - The URL to fetch the film data from.
  * @returns {Promise<Array>} - A promise that resolves to an array of film objects.
+ * @throws {Error} - If there is an error during the fetch operation or processing.
+ *
  */
 async function fetchFilms(url) {
-    let films = [];
+    let films = []; // Array to store fetched film data.
     try {
         while (films.length < 8) {
             const response = await fetch(url);
             if (response.ok) {
-                const data = await response.json();
-                films.push(...data.results);
+                const data = await response.json();// Add fetched movie data to the films array.
+                films.push(...data.results);// Update the URL for the next call to fetch more data.
                 url = data.next; // Update the URL for the next call
             } else {
                 // If the response is not successful, exit the loop
@@ -88,33 +202,39 @@ async function fetchFilms(url) {
             }
         }
 
+        // Iterate through the fetched films and store their details.
         for (const film of films) {
             await storeMovieDetails(film.id);
         }
 
-
         return films.slice(0, 8); // Return only the first 8 elements
     } catch (error) {
-        console.error('Error fetching data:', error);
+        console.error('Error fetching films data:', error);
         return films.slice(0, 8); // Return the elements obtained so far
     }
 }
 
+
 /**
- * Fetches data for the best film from an API and updates the page accordingly.
- * This function fetches the data, parses the movie information, and updates the UI.
- * @returns {Promise} A Promise that resolves to the best film data.
+ * Retrieves the best film data asynchronously, processes it, and updates the display.
+ *
+ * @throws {Error} - If there's an error during data retrieval or processing.
  */
-fetchBestFilm().then(data => {
-    const results = data.results
-    if (results && results.length > 0){
-        const bestMovie = parseMovie(results[0])
-        updateBestFilm(bestMovie)
-        console.log("Best Film data retrieved", bestMovie)
-    } else {
-        console.log("No movie found.")
+async function getBestFilm(){
+    try {
+        // Fetch the best film data
+        const data = await fetchBestFilm();
+        const results = data.results;
+
+        // If there are results and at least one film is available, process and update the display.
+        if (results && results.length > 0){
+            const bestFilm = parseMovie(results[0]);
+            updateBestFilm(bestFilm)
+        }
+    } catch (error) {
+        console.error("Error fetching best film:", error)
     }
-})
+}
 
 /*------ ----- ----- Code for carousel ----- ----- -----*/
 
@@ -130,16 +250,12 @@ function  addCarouselArrowEvents(containerId, arrowRightId, arrowLeftId) {
     const arrowRight = document.getElementById(arrowRightId)
     const arrowLeft = document.getElementById(arrowLeftId)
 
-    /**
-     * Adds a click event listener to the right arrow button that scrolls the carousel to the right.
-     */
+    // Adds a click event listener to the right arrow button that scrolls the carousel to the right.
     arrowRight.addEventListener("click", () => {
         row.scrollLeft += row.offsetWidth;
     })
 
-    /**
-     * Adds a click event listener to the left arrow button that scrolls the carousel to the left.
-     */
+    // Adds a click event listener to the left arrow button that scrolls the carousel to the left.
     arrowLeft.addEventListener("click", () => {
         row.scrollLeft -= row.offsetWidth;
     })
@@ -152,30 +268,32 @@ function  addCarouselArrowEvents(containerId, arrowRightId, arrowLeftId) {
  * @param {string} containerId - The ID of the container element to which the film element will be added.
  */
 function createFilmElement(film, containerId) {
+    // Get the films container element by its ID
     const filmsContainer = document.getElementById(containerId)
+
+    // Create a new film element and add appropriate CSS class
     const newFilm = document.createElement("div");
     newFilm.classList.add("pelicula");
 
+    // Set the "id" attribute of the film element to the film's ID
     newFilm.setAttribute("id", `${film.id}`);
-    // Start test modal
+
+    // Add a click event listener to the film element to display detailed movie information in modal
+    const modal = document.querySelector('.modal');
     newFilm.addEventListener('click', () => {
         updateModalContent(moviesById[newFilm.id])
         modal.classList.add('modal--show');
     })
-    // End test modal
+
     const img = new Image();
     img.src = film.image_url;
 
-    /**
-     * Sets the background image of the film element to the film's image URL.
-     */
+    // Sets the background image of the film element to the film's image URL.
     img.onload = () => {
         newFilm.style.backgroundImage = `url(${film.image_url})`;
     };
 
-    /**
-     * Sets a default background image if the film's image URL is not valid.
-     */
+    // Sets a default background image if the film's image URL is not valid.
     img.onerror = () => {
         newFilm.style.backgroundImage = `url("../images/best_film_test.webp")`;
     };
@@ -187,29 +305,16 @@ function createFilmElement(film, containerId) {
     textElement.style.textAlign = "left";
     textElement.style.marginTop = "auto";
 
+    // Append the text element to the film element and the film element to the films container
     newFilm.appendChild(textElement);
     filmsContainer.appendChild(newFilm);
 }
 
-/*----- ----- ----- Get Top Rated Films ----- ----- -----*/
-fetchFilms("http://localhost:8000/api/v1/titles/?sort_by=-imdb_score").then((films) => {
-    films.forEach((film) => {
-        createFilmElement(film, "carousel_top_films");
-    });
-});
-
-addCarouselArrowEvents("container_carousel_top_films",
-    "arrow_right_top_films",
-    "arrow_left_top_films")
-
-/*----- ----- ----- Get other genres ----- ----- -----*/
-
-const genres = [
-    { genre: "Comedy", container: "carousel_comedy" },
-    { genre: "Family", container: "carousel_family" },
-    { genre: "Biography", container: "carousel_biography" },
-]
-
+/**
+ * Fetches films of a specific genre, creates film elements, and adds them to a carousel.
+ * @function fetchAndCreateFilms
+ * @param {string} genre - The genre of films to fetch and create elements for.
+ */
 function fetchAndCreateFilms(genre) {
     fetchFilms(`http://localhost:8000/api/v1/titles/?genre=${genre}&sort_by=-imdb_score`)
         .then((films) => {
@@ -223,44 +328,35 @@ function fetchAndCreateFilms(genre) {
         `arrow_left_${genre.toLowerCase()}`);
 }
 
-genres.forEach((genreData) => {
-    fetchAndCreateFilms(genreData.genre);
-});
 
+/* ----- ----- ----- ----- Retrieve and store the movie details ----- ----- ----- ------ */
 
-/*----- ----- ----- Modal Test for best film----- ----- -----*/
-
-const openModal = document.querySelector('.modal_info_button');
-const closeModal = document.querySelector('.modal_close')
-const modal = document.querySelector('.modal');
-
-
-openModal.addEventListener('click', (e) => {
-    e.preventDefault()
-    const elementWithClass = document.querySelector(".best_film");
-    updateModalContent(moviesById[elementWithClass.id])
-    modal.classList.add('modal--show');
-}) 
-
-closeModal.addEventListener('click', (e) => {
-    e.preventDefault();
-    modal.classList.remove('modal--show');
-})
-
-
-// ---------------Recuperar perlicula -------------------//
-const topFilmsDetails = [];
-const moviesById = {};
-
+/**
+ * Fetches the details of a movie from the API based on its ID.
+ * @async
+ * @function fetchMovieDetails
+ * @param {string} movieId - The ID of the movie to fetch details for.
+ * @returns {Promise<Object>} - A promise that resolves to an object containing the details of the movie.
+ * @throws {Error} - If there's an error during the fetch operation or data processing.
+ */
 async function fetchMovieDetails(movieId) {
     const response = await fetch(`http://localhost:8000/api/v1/titles/${movieId}`);
     return await response.json();
 }
 
+/**
+ * Fetches and stores the details of a movie based on its ID.
+ * @async
+ * @function storeMovieDetails
+ * @param {string} movieId - The ID of the movie to fetch and store details for.
+ * @throws {Error} - If there's an error during the fetch operation or data processing.
+ */
 async function storeMovieDetails(movieId) {
     try {
+        // Fetch movie details using the provided movie ID
         const movieData = await fetchMovieDetails(movieId);
 
+        // Create a movie object with extracted details
         const movie = {
             image: movieData.image_url,
             title: movieData.title,
@@ -276,8 +372,7 @@ async function storeMovieDetails(movieId) {
             summary: movieData.description
         };
 
-        // Aggregate el objeto 'movie' a la lista de películas
-        topFilmsDetails.push(movie);
+        // Store the movie object using its ID as the key
         moviesById[movieId] = movie;
 
         console.log('Película almacenada:', movie);
@@ -285,84 +380,27 @@ async function storeMovieDetails(movieId) {
         console.error('Error al almacenar la película:', error);
     }
 }
-async function fetchAndStoreFilms(url) {
-    let films = [];
-    try {
-        while (films.length < 8) {
-            const response = await fetch(url);
-            if (response.ok) {
-                const data = await response.json();
-                films.push(...data.results);
-                url = data.next; // Update the URL for the next call
-            } else {
-                // If the response is not successful, exit the loop
-                break;
-            }
-        }
 
-        // Recorrer la lista de películas y almacenar sus detalles
-        for (const film of films) {
-            await storeMovieDetails(film.id);
-        }
+/*---- ----- ----- -----  FUNCTIONS CALLS ----- ----- ----- -----*/
 
-        console.log('Películas almacenadas con éxito');
-    } catch (error) {
-        console.error('Error fetching and storing data:', error);
-    }
-}
+// Call the method to initialize modal event listeners
+initializeModalListeners();
 
-fetchAndStoreFilms("http://localhost:8000/api/v1/titles/?sort_by=-imdb_score");
-console.log(topFilmsDetails)
+//Call the method for get the best film
+getBestFilm();
 
-//---- Update modal -----//
-
-function updateModalContent(movie) {
-    const modal = document.getElementById('modal');
-    const modalImage = modal.querySelector('.modal_image');
-    const modalTitle = modal.querySelector('.modal_title');
-    const modalParagraph = modal.querySelector('.modal_paragraph');
-
-    // Actualizar los elementos del modal con la información de la película
-    modalImage.src = movie.image;
-    modalTitle.textContent = movie.title;
-    modalParagraph.innerHTML = `
-        <ul>
-            <li>Title: ${movie.title}</li>
-            <li>Genres: ${movie.genre}</li>
-            <li>Date published: ${movie.releaseDate}</li>
-            <li>Rated: ${movie.rated}</li>
-            <li>Score IMBd: ${movie.imdbScore}</li>
-            <li>Directors: ${movie.director}</li>
-            <li>Actors: ${movie.actors}</li>
-            <li>Duration: ${movie.duration}</li>
-            <li>Countries: ${movie.country}</li>
-            <li>Box Office: ${movie.boxOffice}</li>
-            <li>Description: ${movie.summary}</li>
-        </ul>
-    `;
-}
-
-
-
-// ----- ----- ----- Navbar scroll ----- ----- -----//
-
-const navbar = document.querySelector('.navbar');
-const navbarHeight = navbar.offsetHeight;
-const scrollThreshold = 100; // Cambia esto según la cantidad de desplazamiento que desees antes de cambiar el fondo
-
-window.addEventListener('scroll', () => {
-    if (window.scrollY > scrollThreshold) {
-        navbar.style.backgroundColor = 'black';
-    } else {
-        navbar.style.backgroundColor = 'transparent';
-    }
+//Get Top Rated Films
+fetchFilms("http://localhost:8000/api/v1/titles/?sort_by=-imdb_score").then((films) => {
+    films.forEach((film) => {
+        createFilmElement(film, "carousel_top_films");
+    });
 });
 
-// Establecer el color de fondo inicial al cargar la página
-window.addEventListener('load', () => {
-    if (window.scrollY > scrollThreshold) {
-        navbar.style.backgroundColor = 'black';
-    } else {
-        navbar.style.backgroundColor = 'transparent';
-    }
+addCarouselArrowEvents("container_carousel_top_films",
+    "arrow_right_top_films",
+    "arrow_left_top_films")
+
+//Get other genres
+genres.forEach((genreData) => {
+    fetchAndCreateFilms(genreData.genre);
 });
