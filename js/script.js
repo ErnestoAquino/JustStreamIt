@@ -213,10 +213,10 @@ async function fetchFilms(url) {
             await storeMovieDetails(film.id);
         }
 
-        return films.slice(0, 8); // Return only the first 8 elements
+        return films.slice(0, 7); // Return only the first 8 elements
     } catch (error) {
         console.error('Error fetching films data:', error);
-        return films.slice(0, 8); // Return the elements obtained so far
+        return films.slice(0, 7); // Return the elements obtained so far
     }
 }
 
