@@ -9,27 +9,34 @@ const genres = [
 
 /* ----- ----- ----- ----- NAVBAR SCROLL ----- ----- ----- ----- */
 
-// Select the Navbar (element with the class 'navbar').
-const navbar = document.querySelector('.navbar');
-const scrollThreshold = 100; // Define a scroll threshold.
+/**
+ * Initializes the behavior of the navigation bar in response to scrolling and page load events.
+ * This method sets up event listeners to update the background color of the navigation bar based on scroll position.
+ *
+ * @function initNavbarScrollBehavior
+ */
+function initNavbarScrollBehavior() {
+    const navbar = document.querySelector('.navbar');
 
-// Add a scroll event listener to the global 'window' object to detect when scrolling occurs on the page.
-window.addEventListener('scroll', () => {
-    if (window.scrollY > scrollThreshold) {
-        navbar.style.backgroundColor = 'black';
-    } else {
-        navbar.style.backgroundColor = 'transparent';
-    }
-});
+    // Function to update the background color of the navbar based on scroll position
+    function updateNavbarBackgroundColor() {
+        const scrollThreshold = 300; // Define a scroll threshold.
 
-// Add a load event listener to the global 'window' object that triggers when the page is fully loaded.
-window.addEventListener('load', () => {
-    if (window.scrollY > scrollThreshold) {
-        navbar.style.backgroundColor = 'black';
-    } else {
-        navbar.style.backgroundColor = 'transparent';
+        if (window.scrollY > scrollThreshold) {
+            // Set the background color to black if scroll position is beyond the threshold.
+            navbar.style.backgroundColor = 'black';
+        } else {
+            // Set the background color to transparent if scroll position is below the threshold.
+            navbar.style.backgroundColor = 'transparent';
+        }
     }
-});
+
+    // Add a scroll event listener to update the navbar background color
+    window.addEventListener('scroll', updateNavbarBackgroundColor);
+
+    // Add a load event listener to update the navbar background color when the page is fully loaded
+    window.addEventListener('load', updateNavbarBackgroundColor);
+}
 
 /* ----- ----- ----- ----- MODAL ----- ----- ----- ------*/
 
@@ -101,7 +108,6 @@ function updateModalContent(movie) {
         </ul>
     `;
 }
-
 
 /* ----- ----- ----- -----  MOVIES RETRIEVALS  ----- ----- ----- ----- */
 
@@ -337,7 +343,6 @@ function fetchAndCreateFilms(genre) {
  * @function fetchMovieDetails
  * @param {string} movieId - The ID of the movie to fetch details for.
  * @returns {Promise<Object>} - A promise that resolves to an object containing the details of the movie.
- * @throws {Error} - If there's an error during the fetch operation or data processing.
  */
 async function fetchMovieDetails(movieId) {
     const response = await fetch(`http://localhost:8000/api/v1/titles/${movieId}`);
@@ -375,14 +380,16 @@ async function storeMovieDetails(movieId) {
         // Store the movie object using its ID as the key
         moviesById[movieId] = movie;
 
-        console.log('Película almacenada:', movie);
+        console.log('Stored movie details:', movie);
     } catch (error) {
-        console.error('Error al almacenar la película:', error);
+        console.error('Error storing movie details:', error);
     }
 }
 
 /*---- ----- ----- -----  FUNCTIONS CALLS ----- ----- ----- -----*/
 
+//
+initNavbarScrollBehavior()
 // Call the method to initialize modal event listeners
 initializeModalListeners();
 
