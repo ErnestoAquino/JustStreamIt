@@ -187,12 +187,12 @@ function updateBestFilm(movie){
 
 /**
  * Fetches a list of films from the provided URL.
- * Returns an array containing up to 8 film objects.
+ * Returns an array containing up to 7 film objects.
  *
  * @param {string} url - The URL to fetch the film data from.
+ * @param {boolean} skipFirstFilm - Whether to skip the first film when retrieving data.
  * @returns {Promise<Array>} - A promise that resolves to an array of film objects.
  * @throws {Error} - If there is an error during the fetch operation or processing.
- *
  */
 async function fetchFilms(url, skipFirstFilm = false) {
     let films = []; // Array to store fetched film data.
@@ -200,7 +200,7 @@ async function fetchFilms(url, skipFirstFilm = false) {
         while (films.length < 8) {
             const response = await fetch(url);
             if (response.ok) {
-                const data = await response.json();// Add fetched movie data to the films array.
+                const data = await response.json();
                 if (skipFirstFilm){
                     films.push(...data.results.slice(1));
                 } else {
