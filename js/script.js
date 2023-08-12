@@ -112,25 +112,25 @@ function updateModalContent(movie) {
 /* ----- ----- ----- -----  MOVIES RETRIEVALS  ----- ----- ----- ----- */
 
 /**
- * Fetches the best film data from the API based on the IMDb score.
- * @async
- * @function fetchBestFilm
- * @returns {Promise} A Promise that resolves to the best film data or null if an error occurs.
+ * Fetches the best film based on the highest IMDB score from the provided API endpoint.
+ *
+ * @returns {Object|null} Returns the best film's data as an object or null if any error occurs.
+ * @throws {Error} If there is an issue fetching the data, the error will be thrown for the caller to handle.
  */
 async function fetchBestFilm() {
-    const absolute_url = "http://localhost:8000/api/v1/titles/?sort_by=-imdb_score"
+    const absoluteUrl = "http://localhost:8000/api/v1/titles/?sort_by=-imdb_score"
 
     try {
-        const response = await fetch(absolute_url);
-        if (response.ok) {
-            return await response.json()
-        }
-        else {
+        const response = await fetch(absoluteUrl);
+
+        if (!response.ok) {
+            console.log(`Failed to fetch data Best Film. HTTP status: ${response.status}`);
             return null
         }
+        return await response.json();
     } catch (error) {
-        console.error('Error fetching data:', error);
-        return null
+        console.error('Error fetching data Best Film:', error);
+        throw error;
     }
 }
 
@@ -225,7 +225,6 @@ async function fetchFilms(url, skipFirstFilm = false) {
     }
 }
 
-
 /**
  * Retrieves the best film data asynchronously, processes it, and updates the display.
  *
@@ -235,15 +234,18 @@ async function getBestFilm(){
     try {
         // Fetch the best film data
         const data = await fetchBestFilm();
+        if (!data) {
+            console.error("Failed to retrieved best film data");
+            return
+        }
         const results = data.results;
-
         // If there are results and at least one film is available, process and update the display.
         if (results && results.length > 0){
             const bestFilm = parseMovie(results[0]);
-            await updateBestFilm(bestFilm)
+            await updateBestFilm(bestFilm);
         }
     } catch (error) {
-        console.error("Error fetching best film:", error)
+        console.error("Error fetching best film:", error);
     }
 }
 
@@ -400,16 +402,31 @@ initializeModalListeners();
 
 
 //Call the method for get the best film
-getBestFilm().catch(error => {
-    console.error("Error when calling getBestFilm:", error);
-})
 
-//Get Top Rated Films
-fetchFilms("http://localhost:8000/api/v1/titles/?sort_by=-imdb_score", true).then((films) => {
-    films.forEach((film) => {
-        createFilmElement(film, "carousel_top_films");
-    });
-});
+(async function() {
+    try {
+        await getBestFilm();
+    } catch (error) {
+        console.log("Error in call getBestFilm:", error)
+    }
+})();
+// getBestFilm().catch(error => {
+//     console.error("Error when calling getBestFilm:", error);
+// })
+
+// Get Top Rated Films
+(async function() {
+    try {
+        const films = await fetchFilms("http://localhost:8000/api/v1/titles/?sort_by=-imdb_score", true);
+
+        films.forEach((film) => {
+            createFilmElement(film, "carousel_top_films");
+        });
+    } catch (error) {
+        console.error("Error fetching films:", error);
+    }
+})();
+
 
 addCarouselArrowEvents("container_carousel_top_films",
     "arrow_right_top_films",
