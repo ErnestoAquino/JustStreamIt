@@ -287,6 +287,38 @@ function  addCarouselArrowEvents(containerId, arrowRightId, arrowLeftId) {
 }
 
 /**
+ * Creates a text element (h3 tag) for displaying a film title.
+ *
+ * @param {string} filmTitle - The title of the film.
+ * @returns {HTMLElement} - Returns a h3 element with the film's title and a CSS class 'film_title'.
+ */
+function createTextElement(filmTitle) {
+    const textElement = document.createElement("h3");
+    textElement.textContent = filmTitle;
+    textElement.classList.add('film_title');
+    return textElement;
+}
+
+
+/**
+ * Sets the background image of a given film element. If the provided image URL
+ * is valid, it will be set as the background. Otherwise, a default image will be used.
+ *
+ * @param {HTMLElement} newFilm - The film element to which the background image will be applied.
+ * @param {string} imageUrl - The URL of the image intended to be set as the background.
+ */
+function setBackgroundImage(newFilm, imageUrl) {
+    const img = new Image();
+    img.src = imageUrl;
+    img.onload = () => {
+        newFilm.style.backgroundImage = `url(${imageUrl})`;
+    };
+    img.onerror = () => {
+        newFilm.style.backgroundImage = `url("../images/image_default.jpg")`;
+    };
+}
+
+/**
  * Creates and adds a film element to a specified container.
  *
  * @param {object} film - The film object containing details such as image URL and title.
@@ -294,7 +326,7 @@ function  addCarouselArrowEvents(containerId, arrowRightId, arrowLeftId) {
  */
 function createFilmElement(film, containerId) {
     // Get the films container element by its ID
-    const filmsContainer = document.getElementById(containerId)
+    const filmsContainer = document.getElementById(containerId);
 
     // Create a new film element and add appropriate CSS class
     const newFilm = document.createElement("div");
@@ -303,33 +335,14 @@ function createFilmElement(film, containerId) {
     // Set the "id" attribute of the film element to the film's ID
     newFilm.setAttribute("id", `${film.id}`);
 
-    // Add a click event listener to the film element to display detailed movie information in modal
     const modal = document.querySelector('.modal');
     newFilm.addEventListener('click', () => {
         updateModalContent(moviesById[newFilm.id])
         modal.classList.add('modal--show');
     })
 
-    const img = new Image();
-    img.src = film.image_url;
-
-    // Sets the background image of the film element to the film's image URL.
-    img.onload = () => {
-        newFilm.style.backgroundImage = `url(${film.image_url})`;
-    };
-
-    // Sets a default background image if the film's image URL is not valid.
-    img.onerror = () => {
-        newFilm.style.backgroundImage = `url("../images/best_film_test.webp")`;
-    };
-
-    const textElement = document.createElement("h3");
-    textElement.textContent = film.title;
-    textElement.style.color = "white";
-    textElement.style.fontSize = "14px";
-    textElement.style.textAlign = "left";
-    textElement.style.marginTop = "auto";
-
+    setBackgroundImage(newFilm, film.image_url);
+    const textElement = createTextElement(film.title);
     // Append the text element to the film element and the film element to the films container
     newFilm.appendChild(textElement);
     filmsContainer.appendChild(newFilm);
