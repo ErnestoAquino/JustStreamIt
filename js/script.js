@@ -1,6 +1,18 @@
 /* ----- ----- ----- ----- VARIABLES ----- ----- ----- -----*/
+
+/**
+ * A Dictionary to store movie details by their ID.
+ * This allows for quick access to movie data based on their unique ID.
+ */
 const moviesById = {};
 
+/**
+ * An array of genre objects. Each object represents a movie genre and its associated
+ * carousel container in the UI.
+ *
+ * - genre: The name of the movie genre (e.g., "Comedy").
+ * - container: The ID of the DOM element (carousel) where movies of this genre will be displayed.
+ */
 const genres = [
     { genre: "Comedy", container: "carousel_comedy" },
     { genre: "Family", container: "carousel_family" },
@@ -324,23 +336,34 @@ function createFilmElement(film, containerId) {
 }
 
 /**
- * Fetches films of a specific genre, creates film elements, and adds them to a carousel.
- * @function fetchAndCreateFilms
- * @param {string} genre - The genre of films to fetch and create elements for.
+ * Asynchronously fetches films based on genre data and then creates and displays film elements.
+ *
+ * This function does the following:
+ * 1. Fetches films based on a specific genre, sorted by IMDb score.
+ * 2. For each fetched film, it creates a film element and displays it in the specified container.
+ * 3. Adds carousel arrow event listeners for the specified genre container.
+ *
+ * @param {Object} genreData - An object containing information about the genre.
+ * @param {string} genreData.genre - The name of the genre (e.g., "Comedy").
+ * @param {string} genreData.container - The ID of the DOM element (carousel) where movies of this genre will be displayed.
  */
-function fetchAndCreateFilms(genre) {
-    fetchFilms(`http://localhost:8000/api/v1/titles/?genre=${genre}&sort_by=-imdb_score`)
-        .then((films) => {
-            films.forEach((film) => {
-                createFilmElement(film, `carousel_${genre.toLowerCase()}`);
-            });
-        });
+async function fetchAndCreateFilms(genreData) {
+    try {
+        const films = await fetchFilms(`http://localhost:8000/api/v1/titles/?genre=${genreData.genre}&sort_by=-imdb_score`);
 
-    addCarouselArrowEvents(`container_carousel_${genre.toLowerCase()}`,
-        `arrow_right_${genre.toLowerCase()}`,
-        `arrow_left_${genre.toLowerCase()}`);
+        for (const film of films) {
+            createFilmElement(film, genreData.container);
+        }
+
+        addCarouselArrowEvents(
+            `container_${genreData.container}`,
+            `arrow_right_${genreData.genre.toLowerCase()}`,
+            `arrow_left_${genreData.genre.toLowerCase()}`
+        );
+    } catch (error) {
+        console.error(`Error fetching films for genre ${genreData.genre}:`, error);
+    }
 }
-
 
 /* ----- ----- ----- ----- Retrieve and store the movie details ----- ----- ----- ------ */
 
@@ -395,14 +418,16 @@ async function storeMovieDetails(movieId) {
 
 /*---- ----- ----- -----  FUNCTIONS CALLS ----- ----- ----- -----*/
 
-//
+// Initialize the behavior of the navigation bar when scrolling
 initNavbarScrollBehavior()
-// Call the method to initialize modal event listeners
+// Initialize event listeners for modals in the application
 initializeModalListeners();
 
 
-//Call the method for get the best film
-
+/**
+ * Immediately Invoked Function Expression (IIFE) to fetch and display the best film.
+ * If there's an error during the fetch, it will be logged to the console.
+ */
 (async function() {
     try {
         await getBestFilm();
@@ -410,11 +435,13 @@ initializeModalListeners();
         console.log("Error in call getBestFilm:", error)
     }
 })();
-// getBestFilm().catch(error => {
-//     console.error("Error when calling getBestFilm:", error);
-// })
 
-// Get Top Rated Films
+/**
+ * Immediately Invoked Function Expression (IIFE) to fetch and display the top-rated films.
+ * After fetching, each film is added to the carousel and event listeners are attached
+ * to the carousel arrows for smooth scrolling.
+ * If there's an error during the fetch, it will be logged to the console.
+ */
 (async function() {
     try {
         const films = await fetchFilms("http://localhost:8000/api/v1/titles/?sort_by=-imdb_score", true);
@@ -422,17 +449,21 @@ initializeModalListeners();
         films.forEach((film) => {
             createFilmElement(film, "carousel_top_films");
         });
+        // Add event listeners to carousel arrows to handle left and right scrolling
+        addCarouselArrowEvents("container_carousel_top_films",
+            "arrow_right_top_films",
+            "arrow_left_top_films")
     } catch (error) {
         console.error("Error fetching films:", error);
     }
 })();
 
-
-addCarouselArrowEvents("container_carousel_top_films",
-    "arrow_right_top_films",
-    "arrow_left_top_films")
-
-//Get other genres
-genres.forEach((genreData) => {
-    fetchAndCreateFilms(genreData.genre);
-});
+/**
+ * Immediately Invoked Function Expression (IIFE) to fetch and display films for each genre.
+ * Each genre will have its own set of films fetched and displayed.
+ */
+(async function() {
+    for (const genreData of genres) {
+        await fetchAndCreateFilms(genreData);
+    }
+})();
