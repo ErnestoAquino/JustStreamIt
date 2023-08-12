@@ -140,6 +140,12 @@ h2 {
     color: whitesmoke;
 }
 
+.film_title {
+    color: white;
+    font-size: 14px;
+    text-align: left;
+    margin-top: auto;
+}
 /* ----- ----- ----- Carousel Styles. ----- ----- -----*/
 
 .container {
