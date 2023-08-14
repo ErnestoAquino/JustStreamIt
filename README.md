@@ -21,13 +21,20 @@ Make sure you have [OC Movies API](https://github.com/OpenClassrooms-Student-Cen
 
 1. **Clone the repository**:
    ```sh
-   git clone https://github.com/ErnestoAquino/JustStreamIt
+   git clone https://github.com/ErnestoAquino/JustStreamIt.git
    cd JustStreamIt
    ```
 1. **Open the file**:
     ```sh
     index.html
    ```
+
+## Screenshots
+### Screenshot of the window.
+<img src="screenshots/screenshot1.png" width="750">
+
+### Screenshot of the modal window.
+<img src="screenshots/screenshot2.png" width="750">
 
 
 ## Acknowledgments
