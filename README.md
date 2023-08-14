@@ -1,4 +1,4 @@
-# OCMovies Web Application
+# JustStreamIt
    
    This web application is designed to display movies from the OCMovies-API, emulating the layout and experience similar to Netflix. It's built to work seamlessly on the three most popular browsers currently in use.
    
@@ -22,6 +22,8 @@ Make sure you have [OC Movies API](https://github.com/OpenClassrooms-Student-Cen
 1. **Clone the repository**:
    ```sh
    git clone https://github.com/ErnestoAquino/JustStreamIt.git
+    ```
+   ```sh
    cd JustStreamIt
    ```
 1. **Open the file**:
